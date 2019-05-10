@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PureVanilla Spigot">
+    <output-path>$PROJECT_DIR$/out/artifacts/PureVanilla_Spigot</output-path>
+    <root id="archive" name="PureStats.jar">
+      <element id="module-output" name="purestats" />
+      <element id="file-copy" path="$PROJECT_DIR$/res/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/res/plugin.yml" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/mysql-connector-java-8.0.16.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/res/maxminddb.mmdb" />
+    </root>
+  </artifact>
+</component>
