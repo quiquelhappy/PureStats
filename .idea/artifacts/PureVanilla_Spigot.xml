@@ -5,8 +5,9 @@
       <element id="module-output" name="purestats" />
       <element id="file-copy" path="$PROJECT_DIR$/res/config.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/res/plugin.yml" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/res/mysql-connector-java-8.0.16.jar" path-in-jar="/" />
-      <element id="file-copy" path="$PROJECT_DIR$/res/maxminddb.mmdb" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/jackson-core-2.9.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/jackson-databind-2.9.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/jackson-annotations-2.9.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

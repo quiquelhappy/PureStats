@@ -28,6 +28,7 @@ public class join implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent event) {
         String ip = (Objects.requireNonNull(event.getPlayer().getAddress())).getAddress().toString().split("/")[1];
         getLocation(ip,event.getPlayer());
+        ovh.quiquelhappy.mcplugins.purestats.checker.advancements.getPlayerAdvancements(event.getPlayer().getUniqueId().toString());
     }
 
     public void getLocation(String ip, Player player){
@@ -59,15 +60,15 @@ public class join implements Listener {
             String country = null;
             String state = null;
 
-            if(obj.get("country_code")!=null){
+            if(!obj.get("country_code").isJsonNull()){
                 if(obj.get("country_code").getAsString()!="Not found"){
                     country=obj.get("country_code").getAsString();
                 }
             }
 
-            if(obj.get("state")!=null){
+            if(!obj.get("state").isJsonNull()){
                 if(obj.get("state").getAsString()!="Not found"){
-                    state=obj.get("state").getAsString();
+                    state=obj.get("state").getAsString().replace("'","");
                 }
             }
 
@@ -116,15 +117,15 @@ public class join implements Listener {
         try {
             stmt = conn.createStatement();
             if(fcountry==null){
-                System.out.println("[PureStats] Updating "+player.getName()+" with the uuid "+player.getUniqueId().toString()+" and the ip "+ip);
-                int affected = stmt.executeUpdate("UPDATE `pure_stats` SET `name`='"+player.getName()+"',`lastip`='"+ip+"' WHERE uuid='"+player.getUniqueId().toString()+"'");
+                System.out.println("[PureStats] Updating "+player.getName()+" with the uuid "+player.getUniqueId().toString());
+                stmt.executeUpdate("UPDATE `pure_stats` SET `name`='"+player.getName()+"',`lastip`='"+ip+"' WHERE uuid='"+player.getUniqueId().toString()+"'");
             } else {
                 if(fstate==null){
-                    System.out.println("[PureStats] Registering "+player.getName()+" from "+fcountry+" with the uuid "+player.getUniqueId().toString()+" and the ip "+ip);
-                    int affected = stmt.executeUpdate("UPDATE `pure_stats` SET `name`='"+player.getName()+"',`lastip`='"+ip+"',`country`='"+fcountry+"' WHERE uuid='"+player.getUniqueId().toString()+"'");
+                    System.out.println("[PureStats] Updating "+player.getName()+" from "+fcountry+" with the uuid "+player.getUniqueId().toString());
+                    stmt.executeUpdate("UPDATE `pure_stats` SET `name`='"+player.getName()+"',`lastip`='"+ip+"',`country`='"+fcountry+"' WHERE uuid='"+player.getUniqueId().toString()+"'");
                 } else {
-                    System.out.println("[PureStats] Registering "+player.getName()+" from "+fstate+", "+fcountry+" with the uuid "+player.getUniqueId().toString()+" and the ip "+ip);
-                    int affected = stmt.executeUpdate("UPDATE `pure_stats` SET `name`='"+player.getName()+"',`lastip`='"+ip+"',`country`='"+fcountry+"',`state`='"+fstate+"' WHERE uuid='"+player.getUniqueId().toString()+"'");
+                    System.out.println("[PureStats] Updating "+player.getName()+" from "+fstate+", "+fcountry+" with the uuid "+player.getUniqueId().toString());
+                    stmt.executeUpdate("UPDATE `pure_stats` SET `name`='"+player.getName()+"',`lastip`='"+ip+"',`country`='"+fcountry+"',`state`='"+fstate+"' WHERE uuid='"+player.getUniqueId().toString()+"'");
                 }
             }
         } catch (SQLException e) {
@@ -164,22 +165,22 @@ public class join implements Listener {
         try {
             stmt = conn.createStatement();
             if(fcountry==null){
-                System.out.println("[PureStats] Registering "+player.getName()+" with the uuid "+player.getUniqueId().toString()+" and the ip "+ip);
+                System.out.println("[PureStats] Registering "+player.getName());
                 int affected = stmt.executeUpdate("INSERT INTO `pure_stats`(`uuid`, `name`, `lastip`) VALUES ('"+player.getUniqueId().toString()+"','"+player.getName()+"','"+ip+"')");
             } else {
                 if(fstate==null){
-                    System.out.println("[PureStats] Registering "+player.getName()+" from "+fcountry+" with the uuid "+player.getUniqueId().toString()+" and the ip "+ip);
+                    System.out.println("[PureStats] Registering "+player.getName()+" from "+fcountry);
                     int affected = stmt.executeUpdate("INSERT INTO `pure_stats`(`uuid`, `name`, `lastip`, `country`) VALUES ('"+player.getUniqueId().toString()+"','"+player.getName()+"','"+ip+"','"+fcountry+"')");
                 } else {
-                    System.out.println("[PureStats] Registering "+player.getName()+" from "+fstate+", "+fcountry+" with the uuid "+player.getUniqueId().toString()+" and the ip "+ip);
+                    System.out.println("[PureStats] Registering "+player.getName()+" from "+fstate+", "+fcountry);
                     int affected = stmt.executeUpdate("INSERT INTO `pure_stats`(`uuid`, `name`, `lastip`, `country`, `state`) VALUES ('"+player.getUniqueId().toString()+"','"+player.getName()+"','"+ip+"','"+fcountry+"','"+fstate+"')");
                 }
             }
         } catch (SQLException e) {
+            System.out.println("[PureStats] Couldn't register player");
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
-            System.out.println("[PureStats] Couldn't register player");
         }
     }
 }
